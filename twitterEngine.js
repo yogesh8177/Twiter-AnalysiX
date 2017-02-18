@@ -5,10 +5,10 @@ var counter = 0;
 
 var self = module.exports = {
 	client: new twitter({
-		  consumer_key: 'NnWRJHyTjdmO0lp29D3wjb9xP',
-		  consumer_secret: 'ldt9aFuIT7x8YnSLnCB6WJZkYceVMLpskoBnm4BWtpcyE1wA1H',
-		  access_token_key: '3517683260-naUNXXFzvNPFxKbBro2YOJZ6057ATD0KpDVmPR3',
-		  access_token_secret: '0PUNy18mcUt1wNzlfXzpwiafdI62aRccMjGtAijNKzgP6'
+		  consumer_key: 'Your Key',
+		  consumer_secret: 'Your Secret',
+		  access_token_key: 'Your Key',
+		  access_token_secret: 'Your Secret'
 	}),
 	startStream: function(key, db){
 		var stream = self.client.stream('statuses/filter', {track: key, language:'en'});
