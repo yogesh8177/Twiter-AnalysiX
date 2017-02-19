@@ -1,4 +1,4 @@
-# Twiter-AnalysiX
+# Twitter-AnalysiX
 Data mining through twitter API (Under development).
 
 _This app is distributed across following components:_
