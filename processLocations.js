@@ -8,6 +8,7 @@ var searchKey = constants.KEY;
 var oldTime = "2017-01-06T18:57:31.745Z";
 var LOCATIONS = {};
 var SOURCES = {};
+var LOCATION_TOTAL_THRESHOLD = 0;
 
 
 var app = express();
@@ -54,6 +55,9 @@ function updateLocations(result){
 		});
 		
 	});
+	calculateThreshold(LOCATIONS, function(){
+		trimLocations(LOCATIONS);
+	});
 }
 
 function splitLocations(key){
@@ -66,7 +70,27 @@ function splitLocations(key){
 	return locArray;
 }
 
+function trimLocations(locations){
 
+	for(var property in locations){
+		if(locations.hasOwnProperty(property)){
+			if(locations[property] < LOCATION_TOTAL_THRESHOLD)
+				delete locations[property];
+		}
+	}
+}
+
+function calculateThreshold(locations, callback){
+	var totalFreq = 0;
+	var totalWords = Object.keys(locations).length;console.log("Total Locations: "+totalWords);
+
+	for(var property in locations){
+		totalFreq += locations[property] * 0.5;
+	}
+	console.log("Total Frequency: "+totalFreq);
+	LOCATION_TOTAL_THRESHOLD = totalFreq / totalWords;console.log("THRESHOLD: "+LOCATION_TOTAL_THRESHOLD);
+	callback();
+}
 
 
 

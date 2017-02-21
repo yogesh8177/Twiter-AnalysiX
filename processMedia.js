@@ -7,6 +7,7 @@ var searchKey = constants.KEY;
 
 var oldTime = "2017-01-06T18:57:31.745Z";
 var MEDIA = {};
+var MEDIA_TOTAL_THRESHOLD = 0;
 
 
 var app = express();
@@ -56,6 +57,31 @@ function updateMedia(result){
 		});
 		
 	});
+	calculateThreshold(MEDIA, function(){
+		trimMedia(MEDIA);
+	});
+}
+
+function trimMedia(media){
+
+	for(var property in media){
+		if(media.hasOwnProperty(property)){
+			if(media[property] < MEDIA_TOTAL_THRESHOLD)
+				delete media[property];
+		}
+	}
+}
+
+function calculateThreshold(media, callback){
+	var totalFreq = 0;
+	var totalWords = Object.keys(media).length;console.log("Total Words: "+totalWords);
+
+	for(var property in media){
+		totalFreq += media[property] * 0.5;
+	}
+	console.log("Total Frequency: "+totalFreq);
+	MEDIA_TOTAL_THRESHOLD = totalFreq / totalWords;console.log("THRESHOLD: "+MEDIA_TOTAL_THRESHOLD);
+	callback();
 }
 
 

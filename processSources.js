@@ -6,7 +6,7 @@ var constants = require('./constants.js');
 var searchKey = constants.KEY;
 var oldTime = "2017-01-06T18:57:31.745Z";
 var SOURCES = {};
-
+var SOURCES_TOTAL_THRESHOLD = 0;
 
 var app = express();
 
@@ -53,6 +53,9 @@ function processSources(result){
 		}
 		
 	});
+	calculateThreshold(SOURCES, function(){
+		trimSources(SOURCES);
+	});
 }
 
 function isValid(key){
@@ -60,5 +63,25 @@ function isValid(key){
 	return sources.length <= 3 ? true : false;
 }
 
+function trimSources(sources){
 
+	for(var property in sources){
+		if(sources.hasOwnProperty(property)){
+			if(sources[property] < SOURCES_TOTAL_THRESHOLD)
+				delete sources[property];
+		}
+	}
+}
+
+function calculateThreshold(sources, callback){
+	var totalFreq = 0;
+	var totalWords = Object.keys(sources).length;console.log("Total Words: "+totalWords);
+
+	for(var property in sources){
+		totalFreq += sources[property] * 0.5;
+	}
+	console.log("Total Frequency: "+totalFreq);
+	SOURCES_TOTAL_THRESHOLD = totalFreq / totalWords;console.log("THRESHOLD: "+SOURCES_TOTAL_THRESHOLD);
+	callback();
+}
 
