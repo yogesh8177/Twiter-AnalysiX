@@ -5,10 +5,10 @@ var counter = 0;
 
 var self = module.exports = {
 	client: new twitter({
-		  consumer_key: 'Your Key',
-		  consumer_secret: 'Your Secret',
-		  access_token_key: 'Your Key',
-		  access_token_secret: 'Your Secret'
+		  consumer_key: process.env.consumer_key,
+		  consumer_secret: process.env.consumer_secret,
+		  access_token_key: process.env.access_token_key,
+		  access_token_secret: process.env.access_token_secret
 	}),
 	startStream: function(key, db){
 		var stream = self.client.stream('statuses/filter', {track: key, language:'en'});
@@ -21,7 +21,8 @@ var self = module.exports = {
 		});
 			 
 		stream.on('error', function(error) {
-		  throw error;
+		  console.log(error);
+		  //throw error;
 		});
 	}
 };

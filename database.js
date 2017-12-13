@@ -5,7 +5,7 @@ var DB = null;
 
 module.exports = {
 	connect: function(callback){
-		var url = 'mongodb://localhost:27017/sentiment';
+		var url = 'mongodb://mongodb:27017/sentiment';
 		MongoClient.connect(url, function(err, db) {
 		  assert.equal(null, err);
 		  console.log("Connected correctly to mongo server.");

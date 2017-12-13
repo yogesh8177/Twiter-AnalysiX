@@ -11,5 +11,9 @@
     "data-mining"
   ],
   "author": "Yogesh Jadhav",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "twitter": "^1.7.1"
+  }
 }

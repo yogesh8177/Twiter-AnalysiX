@@ -1,0 +1,87 @@
+version: "3.1"
+services:
+  twitterEngine: 
+    image: node:6.11.1
+    volumes:
+      - ./node_modules:/app/twitterAnalysiX/node_modules
+      - ./twitterEngine.js:/app/twitterAnalysiX/twitterEngine.js
+      - ./constants.js:/app/twitterAnalysiX/constants.js
+      - ./database.js:/app/twitterAnalysiX/database.js
+      - ./package.json:/app/twitterAnalysiX/package.json
+      - ./app.js:/app/twitterAnalysiX/app.js
+    working_dir: /app/twitterAnalysiX/
+    command: node app.js
+    env_file: .env
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongodb
+
+  processText: 
+    image: node:6.11.1
+    volumes:
+      - ./node_modules:/app/twitterAnalysiX/node_modules
+      - ./constants.js:/app/twitterAnalysiX/constants.js
+      - ./database.js:/app/twitterAnalysiX/database.js
+      - ./package.json:/app/twitterAnalysiX/package.json
+      - ./twitterEngine.js:/app/twitterAnalysiX/processText.js
+    working_dir: /app/twitterAnalysiX/
+    command: node processText.js
+    ports:
+      - 4004:4004
+    depends_on:
+      - mongodb
+      - twitterEngine
+
+  processSources: 
+    image: node:6.11.1
+    volumes:
+      - ./node_modules:/app/twitterAnalysiX/node_modules
+      - ./constants.js:/app/twitterAnalysiX/constants.js
+      - ./database.js:/app/twitterAnalysiX/database.js
+      - ./package.json:/app/twitterAnalysiX/package.json
+      - ./twitterEngine.js:/app/twitterAnalysiX/processSources.js
+    working_dir: /app/twitterAnalysiX/
+    command: node processSources.js
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongodb
+      - twitterEngine
+
+  processMedia: 
+    image: node:6.11.1
+    volumes:
+      - ./node_modules:/app/twitterAnalysiX/node_modules
+      - ./constants.js:/app/twitterAnalysiX/constants.js
+      - ./database.js:/app/twitterAnalysiX/database.js
+      - ./package.json:/app/twitterAnalysiX/package.json
+      - ./twitterEngine.js:/app/twitterAnalysiX/processMedia.js
+    working_dir: /app/twitterAnalysiX/
+    command: node processMedia.js
+    ports:
+      - 5005:5005
+    depends_on:
+      - mongodb
+      - twitterEngine
+
+  processLocations: 
+    image: node:6.11.1
+    volumes:
+      - ./node_modules:/app/twitterAnalysiX/node_modules
+      - ./constants.js:/app/twitterAnalysiX/constants.js
+      - ./database.js:/app/twitterAnalysiX/database.js
+      - ./package.json:/app/twitterAnalysiX/package.json
+      - ./twitterEngine.js:/app/twitterAnalysiX/processLocations.js
+    working_dir: /app/twitterAnalysiX/
+    command: node processLocations.js
+    ports:
+      - 4000:4000
+    depends_on:
+      - mongodb
+      - twitterEngine
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
